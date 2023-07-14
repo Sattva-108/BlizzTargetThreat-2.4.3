@@ -77,6 +77,7 @@ visualFrame:SetScript('OnMouseDown', function()
 	DEFAULT_CHAT_FRAME:AddMessage('Locking on')
 	frame.enableSnapping = false
 	this:EnableMouse(false)
+	visualFrame:Hide()
 
 	local point, relativeTo, relativePoint, x, y = frame.snapFrameID:GetPoint()
 	threatFrame:SetParent(frame.snapFrameID)
@@ -120,6 +121,11 @@ frame:SetScript('OnUpdate', function()
 		frame.visual:EnableMouse(true)
 	end
 
+	-- dumb check
+	if not this.frameID or this.frameID == WorldFrame or this.frameID == UIParent or this.FrameID == this.visual then
+		return
+	end
+
 	if this.frameID ~= this.lastFrameID then
 		this.lastFrameID = this.frameID
 		DEFAULT_CHAT_FRAME:AddMessage('Snapping to: ' .. tostring(this.frameID:GetName() or this.frameID))
@@ -133,12 +139,15 @@ frame:SetScript('OnUpdate', function()
 		this.visual:SetHeight(this.frameID:GetHeight() * this.frameID:GetEffectiveScale() / UIParent:GetScale())
 		this.visual:SetFrameStrata(this.frameID:GetFrameStrata())
 
+
 		if this.frameID:GetName() and strsub(this.frameID:GetName(), 1, 3) == 'LUF' then
 			this.visual:SetFrameLevel(this.frameID:GetFrameLevel() + 10)
 		else
 			this.visual:SetFrameLevel(this.frameID:GetFrameLevel() + 1)
 		end
+
 	end
+
 end)
 
 SLASH_KTMBLIZZ1 = '/ktmsnap'

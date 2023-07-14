@@ -2,7 +2,7 @@
 ## Author: Sattva
 ## Version: 2.4.3
 ## Interface: 20400
-## SavedVariablesPerCharacter: BTT_Parent, BTT_x, BTT_y, BTT_point, BTT_relativePoint
+## SavedVariables: BTT_Parent, BTT_x, BTT_y, BTT_point, BTT_relativePoint
 
 
 Threat-2.0\embeds.xml
