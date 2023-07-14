@@ -1,0 +1,91 @@
+------------------------------------------------------------------------
+r80880 | StingerSoft | 2008-08-24 02:28:15 -0400 (Sun, 24 Aug 2008) | 1 line
+Changed paths:
+   M /trunk/Threat-2.0/Threat-2.0/NPCModules/BlackTemple/Illidan.lua
+   M /trunk/Threat-2.0/Threat-2.0/NPCModules/BlackTemple/Supremus.lua
+   M /trunk/Threat-2.0/Threat-2.0/NPCModules/CoilfangReservoir/SerpentshrineCavern/Leotheras.lua
+   M /trunk/Threat-2.0/Threat-2.0/NPCModules/Karazhan/Nightbane.lua
+   M /trunk/Threat-2.0/Threat-2.0/NPCModules/ZulAman/Zuljin.lua
+
+Threat-2.0: added NPCModules ruRU triggers
+------------------------------------------------------------------------
+r79785 | xinhuan | 2008-08-05 04:32:42 -0400 (Tue, 05 Aug 2008) | 1 line
+Changed paths:
+   M /trunk/Threat-2.0/Threat-2.0/NPCModules/BlackTemple/Council.lua
+
+Threat-2.0: Another attempt to fix Vanish on Veras Darkshadow (Illidari Council). His vanish buff doesn't reliably fade all the time I think, so we use his Vanish spell cast instead.
+------------------------------------------------------------------------
+r79729 | charon | 2008-08-03 07:52:00 -0400 (Sun, 03 Aug 2008) | 7 lines
+Changed paths:
+   M /trunk/Threat-2.0/Threat-2.0/ClassModules/Druid.lua
+   M /trunk/Threat-2.0/Threat-2.0/ThreatClassModuleCore.lua
+
+Threat-2.0: Fix Lifebloom threat
+
+Testing by Xinhuan[1] proves that LB HOT only adds half threat
+compared to other heals, and the Bloom effect does not result in any
+threat for either the druid or the target.
+
+[1] http://www.wowace.com/forums/index.php?topic=13942.msg234447#msg234447
+------------------------------------------------------------------------
+r79668 | charon | 2008-08-02 09:11:31 -0400 (Sat, 02 Aug 2008) | 12 lines
+Changed paths:
+   M /trunk/Threat-2.0/Threat-2.0/ClassModules/Paladin.lua
+
+Threat-2.0: Fix Paladin holy spell IDs
+
+r70263 changed Paladin holy spell IDs to match those in SPELL_HEAL
+events, which were different from the ones on spell buttons.  Starting
+with 2.4.2, they have been back to the "real" spell IDs again for HL
+and FoL, and were changed again for Holy Shock.  Pointed out by
+Zappster[1].
+
+This resurrects the old RFC patch that was dropped in favour of the
+flat (but apparently wrong) modifier in r78939.
+
+[1] http://www.wowace.com/forums/index.php?topic=13767.0
+------------------------------------------------------------------------
+r79667 | charon | 2008-08-02 09:11:19 -0400 (Sat, 02 Aug 2008) | 6 lines
+Changed paths:
+   M /trunk/Threat-2.0/Threat-2.0/ClassModules/Paladin.lua
+   M /trunk/Threat-2.0/Threat-2.0/ThreatClassModuleCore.lua
+
+Threat-2.0: Revert "Fix paladin healing threat"
+
+Zappster points out [1] that the modifier does not apply to at least
+PoM; so we revert this change.  A patch to fix the spell IDs follows.
+
+[1] http://www.wowace.com/forums/index.php?topic=13767.0
+------------------------------------------------------------------------
+r79616 | xinhuan | 2008-08-01 14:32:30 -0400 (Fri, 01 Aug 2008) | 1 line
+Changed paths:
+   M /trunk/Threat-2.0/Threat-2.0/NPCModules/BlackTemple/Council.lua
+
+Threat-2.0: Fix Veras Darkshadow's Vanish spell ID from 41479 to 41476, so that, you know, his threat actually vanishes when he casts vanish.
+------------------------------------------------------------------------
+r79611 | aiiane | 2008-08-01 12:55:23 -0400 (Fri, 01 Aug 2008) | 1 line
+Changed paths:
+   M /trunk/Threat-2.0/embeds.xml
+
+Threat-2.0: ...and add in AceTimer. aroo?
+------------------------------------------------------------------------
+r79610 | aiiane | 2008-08-01 12:51:35 -0400 (Fri, 01 Aug 2008) | 1 line
+Changed paths:
+   M /trunk/Threat-2.0/embeds.xml
+
+Threat-2.0: really, actually remove AceLocale from embeds.xml.
+------------------------------------------------------------------------
+r79609 | charon | 2008-08-01 12:37:00 -0400 (Fri, 01 Aug 2008) | 2 lines
+Changed paths:
+   M /trunk/Threat-2.0/Threat-2.0.toc
+
+Threat-2.0: also remove LibGUIDRegistry from optdeps
+
+------------------------------------------------------------------------
+r79608 | charon | 2008-08-01 12:33:59 -0400 (Fri, 01 Aug 2008) | 2 lines
+Changed paths:
+   M /trunk/Threat-2.0/embeds.xml
+
+Threat-2.0: Remove unused AceLocale-3.0 and LibGUIDRegistry-0.1 from embeds.xml
+
+------------------------------------------------------------------------

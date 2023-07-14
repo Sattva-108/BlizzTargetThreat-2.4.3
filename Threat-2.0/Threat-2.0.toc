@@ -1,0 +1,9 @@
+## Interface: 20400
+## Title: Lib: Threat-2.0
+## Author: Antiarc (cheald@gmail dot com)
+## Notes: Library for multi-target threat tracking
+## OptionalDeps: Ace3, CallbackHandler-1.0
+## X-Category: Library
+
+embeds.xml
+Threat-2.0\lib.xml

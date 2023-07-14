@@ -1,0 +1,7 @@
+## Title: BlizzTargetThreat
+## Author: Sattva
+## Version: 2.4.3
+## Interface: 20400
+
+Threat-2.0/embeds.xml
+BlizzTargetThreat.lua
