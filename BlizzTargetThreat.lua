@@ -12,29 +12,44 @@ local frame = CreateFrame("Frame")
 frame:SetScript("OnUpdate", function()
     local player = UnitGUID("player")
     local target = UnitGUID("target")
-    if target == nil then return end
-    if not target then return end
-    if UnitIsDeadOrGhost("target") then return end
-    if not UnitAffectingCombat("target") then return end
-    if not UnitCanAttack("player", "target") then return end
+    if target == nil then
+        addon.gui.Frame:Hide()
+        return
+    end
+    if not target then
+        addon.gui.Frame:Hide()
+        return
+    end
+    if UnitIsDeadOrGhost("target") then
+        addon.gui.Frame:Hide()
+        return
+    end
+    if not UnitAffectingCombat("target") then
+        addon.gui.Frame:Hide()
+        return
+    end
+    if not UnitCanAttack("player", "target") then
+        addon.gui.Frame:Hide()
+        return
+    end
     local maxThreat, _ = Threat:GetMaxThreatOnTarget(target)
     local myThreat = Threat:GetThreat(player, target)
-    local threatPercent = myThreat / maxThreat * 100
+    local threatPercent = math.floor(myThreat / maxThreat * 100 + 0.5)
+    print(threatPercent)
 
-    -- Update the GUI elements
-    local text = threatPercent
-    if threatPercent == math.floor(threatPercent) then
-        text = string.format("%d", threatPercent)
+    if threatPercent > 0 then
+        -- Show frame
+        addon.gui.Frame:Show()
+
+        local threatStr = string.format("%d%%", threatPercent)
+        addon.gui.text:SetText(threatStr)
+
+        addon.gui.bg:SetVertexColor(addon.GetThreatStatusColor(threatPercent))
+
     else
-        text = string.format("%.1f", threatPercent)
+        -- Hide frame
+        addon.gui.Frame:Hide()
     end
-
-
-    addon.gui.bg:SetVertexColor(addon.GetThreatStatusColor(threatPercent))
-    addon.gui.bg:Show()  -- Show the background texture
-
-
-    addon.gui.Frame:Show()
 end)
 
 addon.GetThreatStatusColor = function(percentage)
