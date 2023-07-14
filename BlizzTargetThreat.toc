@@ -6,4 +6,5 @@
 
 Threat-2.0\embeds.xml
 Threat-2.0\Threat-2.0\lib.xml
+Threat.xml
 BlizzTargetThreat.lua
