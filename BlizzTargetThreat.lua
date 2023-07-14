@@ -7,48 +7,37 @@ addon.gui = {
 }
 
 local Threat = LibStub("Threat-2.0")
-
 local frame = CreateFrame("Frame")
-frame:SetScript("OnUpdate", function()
-    local player = UnitGUID("player")
-    local target = UnitGUID("target")
-    if target == nil then
-        addon.gui.Frame:Hide()
-        return
-    end
-    if not target then
-        addon.gui.Frame:Hide()
-        return
-    end
-    if UnitIsDeadOrGhost("target") then
-        addon.gui.Frame:Hide()
-        return
-    end
-    if not UnitAffectingCombat("target") then
-        addon.gui.Frame:Hide()
-        return
-    end
-    if not UnitCanAttack("player", "target") then
-        addon.gui.Frame:Hide()
-        return
-    end
-    local maxThreat, _ = Threat:GetMaxThreatOnTarget(target)
-    local myThreat = Threat:GetThreat(player, target)
-    local threatPercent = math.floor(myThreat / maxThreat * 100 + 0.5)
-    print(threatPercent)
+local updateFrequency = 0.5
+local timer = 0
 
-    if threatPercent > 0 then
-        -- Show frame
-        addon.gui.Frame:Show()
+frame:SetScript("OnUpdate", function(self, elapsed)
+    timer = timer + elapsed
+    if timer >= updateFrequency then
+        timer = 0
 
-        local threatStr = string.format("%d%%", threatPercent)
-        addon.gui.text:SetText(threatStr)
+        local player = UnitGUID("player")
+        local target = UnitGUID("target")
 
-        addon.gui.bg:SetVertexColor(addon.GetThreatStatusColor(threatPercent))
+        if not target or UnitIsDeadOrGhost("target") or not UnitAffectingCombat("target") or not UnitCanAttack("player", "target") then
+            addon.gui.Frame:Hide()
+            return
+        end
+        local maxThreat, _ = Threat:GetMaxThreatOnTarget(target)
+        local myThreat = Threat:GetThreat(player, target)
+        local threatPercent = math.floor(myThreat / maxThreat * 100 + 0.5)
+        --print("updated")
 
-    else
-        -- Hide frame
-        addon.gui.Frame:Hide()
+        if threatPercent > 0 then
+            addon.gui.Frame:Show()
+
+            local threatStr = string.format("%d%%", threatPercent)
+            addon.gui.text:SetText(threatStr)
+
+            addon.gui.bg:SetVertexColor(addon.GetThreatStatusColor(threatPercent))
+        else
+            addon.gui.Frame:Hide()
+        end
     end
 end)
 
@@ -66,3 +55,4 @@ addon.GetThreatStatusColor = function(percentage)
         return 0.69, 0.69, 0.69
     end
 end
+
