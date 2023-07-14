@@ -31,7 +31,6 @@ local MINOR_VERSION = tonumber(("$Revision: 78410 $"):match("%d+"))
 if MINOR_VERSION > _G.ThreatLib_MINOR_VERSION then _G.ThreatLib_MINOR_VERSION = MINOR_VERSION end
 
 ThreatLib_funcs[#ThreatLib_funcs+1] = function()
-
 -- Need to update this when backwards incompatible changes are made
 local LAST_BACKWARDS_COMPATIBLE_REVISION = 67545
 
