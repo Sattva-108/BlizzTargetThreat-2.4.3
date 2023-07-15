@@ -56,6 +56,7 @@ frame.lazyload:SetScript('OnUpdate', function(_, elapsed)
 	if this.enable then
 		this.elapsed = this.elapsed + elapsed
 		if this.elapsed >= 1 then
+			print("OnUpdate load pos")
 			this.elapsed = 0
 			this.attempts = this.attempts + 1
 			load_position()
@@ -95,6 +96,7 @@ visualFrame:SetScript('OnMouseDown', function()
 	threatFrame:SetScript('OnMouseDown', function(_, button)
 		if button == 'LeftButton' then
 			this:StartMoving()
+			this:Show()
 		elseif button == 'RightButton' then
 			threatFrame:SetMovable(false)
 			threatFrame:EnableMouse(false)
