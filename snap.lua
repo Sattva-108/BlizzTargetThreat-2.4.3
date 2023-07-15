@@ -10,6 +10,8 @@ frame.lazyload = CreateFrame('Frame')
 frame.lazyload.elapsed = 0
 frame.lazyload.attempts = 0
 
+_DEBUG_BTT = {}
+
 local function save_position()
 	local point, relativeTo, relativePoint, x, y = threatFrame:GetPoint()
 
@@ -25,6 +27,13 @@ local function save_position()
 	end
 	BTT_point = point
 	BTT_relativePoint = relativePoint
+
+	_DEBUG_BTT.save_position = {}
+	_DEBUG_BTT.save_position.x = BTT_x
+	_DEBUG_BTT.save_position.y = BTT_y
+	_DEBUG_BTT.save_position.point = BTT_point
+	_DEBUG_BTT.save_position.relativePoint = BTT_relativePoint
+	printTable(_DEBUG_BTT)
 end
 
 local function load_position()
@@ -41,22 +50,41 @@ local function load_position()
 			threatFrame:SetParent(BTT_Parent)
 			threatFrame:ClearAllPoints()
 			threatFrame:SetPoint(BTT_point, BTT_Parent, BTT_relativePoint, BTT_x, BTT_y)
+
+			_DEBUG_BTT.load_position = {}
+			_DEBUG_BTT.load_position.point = BTT_point
+			_DEBUG_BTT.load_position.relativePoint = BTT_relativePoint
+			_DEBUG_BTT.load_position.parent = BTT_Parent
+			_DEBUG_BTT.load_position.x = BTT_x
+			_DEBUG_BTT.load_position.y = BTT_y
+			_DEBUG_BTT.load_position.attempts = frame.lazyload.attempts
+			printTable(_DEBUG_BTT)
 		end
 	end
 end
 
+-- not working.
 frame:RegisterEvent('ADDON_LOADED')
-frame:SetScript('OnEvent', function(_, event, addonName)
-	if event == 'ADDON_LOADED' and addonName == 'BlizzardTargetThreat' then
+frame:SetScript('OnEvent', function()
+	if arg1 == 'BlizzardTargetThreat' then
+		_DEBUG_BTT.addon_loaded = true
 		load_position()
+		print("loading position")
 	end
 end)
 
-frame.lazyload:SetScript('OnUpdate', function(_, elapsed)
+-- working
+frame:RegisterEvent('PLAYER_LOGIN')
+frame:SetScript('OnEvent', function()
+	load_position()
+	print("loading position")
+end)
+
+frame.lazyload:SetScript('OnUpdate', function()
 	if this.enable then
-		this.elapsed = this.elapsed + elapsed
+		print("enabled")
+		this.elapsed = this.elapsed + arg1
 		if this.elapsed >= 1 then
-			print("OnUpdate load pos")
 			this.elapsed = 0
 			this.attempts = this.attempts + 1
 			load_position()
@@ -93,15 +121,15 @@ visualFrame:SetScript('OnMouseDown', function()
 
 	threatFrame:SetMovable(true)
 	threatFrame:EnableMouse(true)
-	threatFrame:SetScript('OnMouseDown', function(_, button)
-		if button == 'LeftButton' then
+	threatFrame:SetScript('OnMouseDown', function()
+		if arg1 == 'LeftButton' then
 			this:StartMoving()
-			this:Show()
-		elseif button == 'RightButton' then
+		elseif arg1 == 'RightButton' then
 			threatFrame:SetMovable(false)
 			threatFrame:EnableMouse(false)
 			threatFrame:Hide()
 			visualFrame:Hide()
+			--klhtm.blizzardui.enableAdjust = false
 			save_position()
 			DEFAULT_CHAT_FRAME:AddMessage('Locked!')
 		end
@@ -177,3 +205,21 @@ SlashCmdList["KTMBLIZZ"] = function(msg)
 		frame.visual:Hide()
 	end
 end
+
+function printTable(t, indent, done)
+	done = done or {}
+	indent = indent or 0
+
+	for k, v in pairs(t) do
+		if type(v) == "table" and not done[v] then
+			done[v] = true
+			print(string.rep("\t", indent)..tostring(k)..":")
+			printTable(v, indent + 1, done)
+		else
+			print(string.rep("\t", indent)..tostring(k)..": "..tostring(v))
+		end
+	end
+end
+
+printTable(_DEBUG_BTT)
+

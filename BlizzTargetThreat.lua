@@ -19,25 +19,25 @@ frame:SetScript("OnUpdate", function(self, elapsed)
         local player = UnitGUID("player")
         local target = UnitGUID("target")
 
-        if not target or UnitIsDeadOrGhost("target") or not UnitAffectingCombat("target") or not UnitCanAttack("player", "target") then
-            addon.gui.Frame:Hide()
-            return
-        end
+        --if not target or UnitIsDeadOrGhost("target") or not UnitAffectingCombat("target") or not UnitCanAttack("player", "target") then
+        --    addon.gui.Frame:Hide()
+        --    return
+        --end
         local maxThreat, _ = Threat:GetMaxThreatOnTarget(target)
         local myThreat = Threat:GetThreat(player, target)
         local threatPercent = math.floor(myThreat / maxThreat * 100 + 0.5)
         --print("updated")
 
-        if threatPercent > 0 then
+        --if threatPercent > 0 then
             addon.gui.Frame:Show()
 
             local threatStr = string.format("%d%%", threatPercent)
             addon.gui.text:SetText(threatStr)
 
             addon.gui.bg:SetVertexColor(addon.GetThreatStatusColor(threatPercent))
-        else
-            addon.gui.Frame:Hide()
-        end
+        --else
+        --    addon.gui.Frame:Hide()
+        --end
     end
 end)
 
