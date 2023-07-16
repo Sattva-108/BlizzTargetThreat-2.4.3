@@ -17,11 +17,13 @@ local function save_position()
 
 	BTT_Parent = threatFrame:GetParent():GetName()
 	if point == 'TOPLEFT' and relativePoint == 'TOPLEFT' then
+		print("x y IF")
 		relativeTo = threatFrame:GetParent()
 		BTT_x = x - relativeTo:GetLeft()
 		BTT_y = y + threatFrame:GetHeight()
 		relativeTo = relativeTo:GetName()
 	else
+		print("x y ELSE")
 		BTT_x = x
 		BTT_y = y
 	end
@@ -116,27 +118,32 @@ visualFrame:SetScript('OnMouseDown', function()
 	if frame.snapFrameID:GetName() and strsub(frame.snapFrameID:GetName(), 1, 3) == 'LUF' then
 		threatFrame:SetFrameLevel(frame.snapFrameID:GetFrameLevel() + 10)
 	end
-
-	threatFrame:Show()
-
-	threatFrame:SetMovable(true)
-	threatFrame:EnableMouse(true)
-	threatFrame:SetScript('OnMouseDown', function()
-		if arg1 == 'LeftButton' then
-			this:StartMoving()
-		elseif arg1 == 'RightButton' then
-			threatFrame:SetMovable(false)
-			threatFrame:EnableMouse(false)
-			threatFrame:Hide()
-			visualFrame:Hide()
-			--klhtm.blizzardui.enableAdjust = false
-			save_position()
-			DEFAULT_CHAT_FRAME:AddMessage('Locked!')
-		end
-	end)
-	threatFrame:SetScript('OnMouseUp', function()
-		this:StopMovingOrSizing()
-	end)
+	threatFrame:SetMovable(false)
+	threatFrame:EnableMouse(false)
+	threatFrame:Hide()
+	visualFrame:Hide()
+	save_position()
+	DEFAULT_CHAT_FRAME:AddMessage('Locked!')
+	--threatFrame:Show()
+	--
+	--threatFrame:SetMovable(true)
+	--threatFrame:EnableMouse(true)
+	--threatFrame:SetScript('OnMouseDown', function()
+	--	if arg1 == 'LeftButton' then
+	--		this:StartMoving()
+	--	elseif arg1 == 'RightButton' then
+	--		threatFrame:SetMovable(false)
+	--		threatFrame:EnableMouse(false)
+	--		threatFrame:Hide()
+	--		visualFrame:Hide()
+	--		--klhtm.blizzardui.enableAdjust = false
+	--		save_position()
+	--		DEFAULT_CHAT_FRAME:AddMessage('Locked!')
+	--	end
+	--end)
+	--threatFrame:SetScript('OnMouseUp', function()
+	--	this:StopMovingOrSizing()
+	--end)
 end)
 
 frame:SetScript('OnUpdate', function()
@@ -152,7 +159,7 @@ frame:SetScript('OnUpdate', function()
 	end
 
 	-- dumb check
-	if not this.frameID or this.frameID == WorldFrame or this.frameID == UIParent or this.FrameID == this.visual then
+	if not this.frameID or this.frameID == WorldFrame or this.frameID == UIParent or this.FrameID == this.visual or this.FrameID == TargetFrameNumericalThreat then
 		return
 	end
 

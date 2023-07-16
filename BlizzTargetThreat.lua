@@ -32,7 +32,11 @@ frame:SetScript("OnUpdate", function(self, elapsed)
             addon.gui.Frame:Show()
 
             local threatStr = string.format("%d%%", threatPercent)
+        if threatPercent > 0 then
             addon.gui.text:SetText(threatStr)
+        else
+            addon.gui.text:SetText("0 %")
+        end
 
             addon.gui.bg:SetVertexColor(addon.GetThreatStatusColor(threatPercent))
         --else
