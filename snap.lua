@@ -1,6 +1,42 @@
 local _G = getfenv()
 
+--------------------------------------------------------------------------------
+---- Define threatFrame aka our main target threat bar.
+--------------------------------------------------------------------------------
+
+
 local threatFrame = _G['TargetFrameNumericalThreat']
+
+threatFrame.instructionText = threatFrame:CreateFontString(nil, 'OVERLAY', 'GameFontNormal')
+threatFrame.instructionText:SetPoint('BOTTOM', threatFrame, 'TOP', 0, 0)
+threatFrame.instructionText:SetText('Select frame to attach to')
+threatFrame.instructionText:SetTextColor(1, 1, 0)  -- RGB color, yellow
+threatFrame.instructionText:Hide() -- Hide on start
+
+local frameAttachedMsg = CreateFrame('Frame', nil, UIParent)
+frameAttachedMsg.text = frameAttachedMsg:CreateFontString(nil, 'OVERLAY', 'GameFontNormalLarge')
+frameAttachedMsg.text:SetPoint('CENTER', UIParent, 'CENTER', 0, 0)
+frameAttachedMsg.text:SetTextColor(0, 1, 0)  -- RGB color for green
+frameAttachedMsg:Hide()
+
+frameAttachedMsg.timeLeft = 0
+frameAttachedMsg:SetScript('OnUpdate', function(self, elapsed)
+	threatFrame:Show()
+	if not frame.enableSnapping then
+		threatFrame.instructionText:Hide()
+	end
+	self.timeLeft = self.timeLeft - elapsed
+	if self.timeLeft <= 0 then
+		self:Hide()
+		threatFrame:Hide()
+	end
+end)
+
+--------------------------------------------------------------------------------
+---- Rest of code
+--------------------------------------------------------------------------------
+
+
 local frame = CreateFrame('Frame')
 frame:Hide()
 frame.enableSnapping = false
@@ -47,6 +83,7 @@ local function save_position()
 	BTT_point = point
 	BTT_relativePoint = relativePoint
 
+	-- Debug is obviously just for debugging, not for actual saving .
 	_DEBUG_BTT.save_position = {}
 	_DEBUG_BTT.save_position.x = BTT_x
 	_DEBUG_BTT.save_position.y = BTT_y
@@ -140,7 +177,12 @@ visualFrame:SetScript('OnMouseDown', function()
 	threatFrame:Hide()
 	visualFrame:Hide()
 	save_position()
-	DEFAULT_CHAT_FRAME:AddMessage('|cffffff00Locked|r & |cFF00FF00Saved|r! |cffffff00Threat Bar|r')
+	DEFAULT_CHAT_FRAME:AddMessage('|cffffff00Locked|r & |cFF00FF00Saved|r |cffffff00threat bar to: |r' .. "|cffff0000" .. frame.snapFrameID:GetName())
+
+	-- Show the "Frame attached & saved" text for 3 seconds.
+	frameAttachedMsg.text:SetText('Threat Frame attached to: ' .. "|cffff0000" .. frame.snapFrameID:GetName())
+	frameAttachedMsg:Show()
+	frameAttachedMsg.timeLeft = 3  -- Start the 3-second countdown
 
 
 	--threatFrame:Show()
@@ -227,10 +269,12 @@ SlashCmdList["KTMBLIZZ"] = function(msg)
 		frame:Show()
 		frame.visual:EnableMouse(true)
 		frame.visual:Show()
+		threatFrame.instructionText:Show()  -- Show text
 	else
 		frame:Hide()
 		frame.visual:EnableMouse(false)
 		frame.visual:Hide()
+		threatFrame.instructionText:Hide()  -- Hide text
 	end
 end
 
