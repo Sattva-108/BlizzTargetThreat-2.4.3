@@ -12,18 +12,35 @@ frame.lazyload.attempts = 0
 
 _DEBUG_BTT = {}
 
+local function printTable(t, indent, done)
+	done = done or {}
+	indent = indent or 0
+
+	for k, v in pairs(t) do
+		if type(v) == "table" and not done[v] then
+			done[v] = true
+			print(string.rep("\t", indent)..tostring(k)..":")
+			printTable(v, indent + 1, done)
+		else
+			print(string.rep("\t", indent)..tostring(k)..": "..tostring(v))
+		end
+	end
+end
+
+--printTable(_DEBUG_BTT)
+
 local function save_position()
 	local point, relativeTo, relativePoint, x, y = threatFrame:GetPoint()
 
 	BTT_Parent = threatFrame:GetParent():GetName()
 	if point == 'TOPLEFT' and relativePoint == 'TOPLEFT' then
-		print("x y IF")
+		--print("x y IF")
 		relativeTo = threatFrame:GetParent()
 		BTT_x = x - relativeTo:GetLeft()
 		BTT_y = y + threatFrame:GetHeight()
 		relativeTo = relativeTo:GetName()
 	else
-		print("x y ELSE")
+		--print("x y ELSE")
 		BTT_x = x
 		BTT_y = y
 	end
@@ -35,7 +52,7 @@ local function save_position()
 	_DEBUG_BTT.save_position.y = BTT_y
 	_DEBUG_BTT.save_position.point = BTT_point
 	_DEBUG_BTT.save_position.relativePoint = BTT_relativePoint
-	printTable(_DEBUG_BTT)
+	--printTable(_DEBUG_BTT)
 end
 
 local function load_position()
@@ -60,7 +77,7 @@ local function load_position()
 			_DEBUG_BTT.load_position.x = BTT_x
 			_DEBUG_BTT.load_position.y = BTT_y
 			_DEBUG_BTT.load_position.attempts = frame.lazyload.attempts
-			printTable(_DEBUG_BTT)
+			--printTable(_DEBUG_BTT)
 		end
 	end
 end
@@ -71,7 +88,7 @@ frame:SetScript('OnEvent', function()
 	if arg1 == 'BlizzardTargetThreat' then
 		_DEBUG_BTT.addon_loaded = true
 		load_position()
-		print("loading position")
+		--print("loading position")
 	end
 end)
 
@@ -79,12 +96,12 @@ end)
 frame:RegisterEvent('PLAYER_LOGIN')
 frame:SetScript('OnEvent', function()
 	load_position()
-	print("loading position")
+	--print("loading position")
 end)
 
 frame.lazyload:SetScript('OnUpdate', function()
 	if this.enable then
-		print("enabled")
+		--print("enabled")
 		this.elapsed = this.elapsed + arg1
 		if this.elapsed >= 1 then
 			this.elapsed = 0
@@ -105,7 +122,7 @@ visualFrame:SetBackdrop({
 })
 visualFrame:SetBackdropColor(0, 0, 0, .6)
 visualFrame:SetScript('OnMouseDown', function()
-	DEFAULT_CHAT_FRAME:AddMessage('Locking on')
+	--DEFAULT_CHAT_FRAME:AddMessage('Locking on')
 	frame.enableSnapping = false
 	this:EnableMouse(false)
 	visualFrame:Hide()
@@ -123,7 +140,9 @@ visualFrame:SetScript('OnMouseDown', function()
 	threatFrame:Hide()
 	visualFrame:Hide()
 	save_position()
-	DEFAULT_CHAT_FRAME:AddMessage('Locked!')
+	DEFAULT_CHAT_FRAME:AddMessage('|cffffff00Locked|r & |cFF00FF00Saved|r! |cffffff00Threat Bar|r')
+
+
 	--threatFrame:Show()
 	--
 	--threatFrame:SetMovable(true)
@@ -150,6 +169,8 @@ frame:SetScript('OnUpdate', function()
 	if not this.enableSnapping then
 		return
 	end
+	threatFrame:Show()
+	--print(this.enableSnapping)
 
 	this.frameID = GetMouseFocus()
 	if this.enableSnapping and this.frameID and this.frameID == frame.visual then
@@ -165,7 +186,7 @@ frame:SetScript('OnUpdate', function()
 
 	if this.frameID ~= this.lastFrameID then
 		this.lastFrameID = this.frameID
-		DEFAULT_CHAT_FRAME:AddMessage('Snapping to: ' .. tostring(this.frameID:GetName() or this.frameID))
+		DEFAULT_CHAT_FRAME:AddMessage('|cFFFFA500Snapping Threat Bar to:|r |cFF00FF00' .. tostring(this.frameID:GetName() or this.frameID) .. '|r')
 		this.snapFrameID = this.frameID
 		local point, relativeTo, relativePoint, x, y = this.frameID:GetPoint()
 		x = x * ((this.frameID:GetEffectiveScale() or 1) / (UIParent:GetScale() or 1))
@@ -213,20 +234,4 @@ SlashCmdList["KTMBLIZZ"] = function(msg)
 	end
 end
 
-function printTable(t, indent, done)
-	done = done or {}
-	indent = indent or 0
-
-	for k, v in pairs(t) do
-		if type(v) == "table" and not done[v] then
-			done[v] = true
-			print(string.rep("\t", indent)..tostring(k)..":")
-			printTable(v, indent + 1, done)
-		else
-			print(string.rep("\t", indent)..tostring(k)..": "..tostring(v))
-		end
-	end
-end
-
-printTable(_DEBUG_BTT)
 

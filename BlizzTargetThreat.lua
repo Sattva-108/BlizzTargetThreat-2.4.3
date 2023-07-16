@@ -19,10 +19,10 @@ frame:SetScript("OnUpdate", function(self, elapsed)
         local player = UnitGUID("player")
         local target = UnitGUID("target")
 
-        --if not target or UnitIsDeadOrGhost("target") or not UnitAffectingCombat("target") or not UnitCanAttack("player", "target") then
-        --    addon.gui.Frame:Hide()
-        --    return
-        --end
+        if not target or UnitIsDeadOrGhost("target") or not UnitAffectingCombat("target") or not UnitCanAttack("player", "target") then
+            addon.gui.Frame:Hide()
+            return
+        end
         local maxThreat, _ = Threat:GetMaxThreatOnTarget(target)
         local myThreat = Threat:GetThreat(player, target)
         local threatPercent = math.floor(myThreat / maxThreat * 100 + 0.5)
