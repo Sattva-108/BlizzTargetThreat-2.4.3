@@ -1,3 +1,8 @@
+BlizzlikeTT_defaults = {
+    -- ... your other config options ...
+    EnableGlow = false, -- disable glow by default
+}
+
 local addon = {}
 
 addon.gui = {
@@ -21,6 +26,7 @@ local function onUpdate(self, elapsed)
 
         if not target or UnitIsDeadOrGhost("target") or not UnitAffectingCombat("target") or not UnitCanAttack("player", "target") then
             addon.gui.Frame:Hide()
+            TargetFrameFlash:Hide()
             return
         end
 
@@ -76,6 +82,26 @@ local function onUpdate(self, elapsed)
         --else
         --    addon.gui.Frame:Hide()
         --end
+
+        -- Set TargetFrameFlash color based on threatPercent
+        if BlizzlikeTT_defaults.EnableGlow then
+            if threatPercent >= 100 then
+                TargetFrameFlash:SetVertexColor(1, 0, 0, 1) -- red color
+                TargetFrameFlash:Show()
+            elseif threatPercent >= 90 then
+                TargetFrameFlash:SetVertexColor(1, 1, 0, 1) -- yellow color
+                TargetFrameFlash:Show()
+            elseif threatPercent >= 70 then
+                TargetFrameFlash:SetVertexColor(0, 1, 0, 1) -- yellow color
+                TargetFrameFlash:Show()
+            else
+                TargetFrameFlash:Hide()
+            end
+        else
+            TargetFrameFlash:Hide()
+        end
+
+
     end
 end
 
@@ -133,5 +159,25 @@ addon.groupCheck = function()
         addon.inGroup = true
     else
         addon.inGroup = false
+    end
+end
+
+SLASH_BTT1 = "/btt"
+function SlashCmdList.BTT(msg, editbox)
+    local command, rest = msg:match("^(%S*)%s*(.-)$")
+
+    if command == "glow" then
+        -- Toggle the glow
+        BlizzlikeTT_defaults.EnableGlow = not BlizzlikeTT_defaults.EnableGlow
+        if BlizzlikeTT_defaults.EnableGlow then
+            print("Glow is now enabled.")
+        else
+            print("Glow is now disabled.")
+        end
+    else
+        -- Print help commands
+        print("BlizzlikeTT commands:")
+        print("/btt glow - Toggle the target glow.")
+        -- Add more help commands here...
     end
 end
