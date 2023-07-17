@@ -1,6 +1,7 @@
 # BlizzTargetThreat-2.4.3
 
-![BlizzTargetThreat1](https://github.com/Sattva-108/BlizzTargetThreat-2.4.3/assets/74269253/2536fea5-786c-47ac-88d6-f073e83966c2)
+
+![BlizzTargetThreat-main](https://github.com/Sattva-108/BlizzTargetThreat-2.4.3/assets/74269253/0d7b5fbd-2890-4177-9ebf-e8ba554f26b2)
 
 
 **BlizzTargetThreat** adds a small threat indicator to your **target frame**.<br>
