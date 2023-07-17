@@ -11,11 +11,11 @@ local frame = CreateFrame("Frame")
 local updateFrequency = 0.5
 local timer = 0
 
-frame:SetScript("OnUpdate", function(self, elapsed)
+local function onUpdate(self, elapsed)
     timer = timer + elapsed
     if timer >= updateFrequency then
         timer = 0
-
+print("OnUpdate")
         local player = UnitGUID("player")
         local target = UnitGUID("target")
 
@@ -43,7 +43,7 @@ frame:SetScript("OnUpdate", function(self, elapsed)
         --    addon.gui.Frame:Hide()
         --end
     end
-end)
+end
 
 addon.GetThreatStatusColor = function(percentage)
     if not percentage then
@@ -60,3 +60,38 @@ addon.GetThreatStatusColor = function(percentage)
     end
 end
 
+frame:RegisterEvent("PLAYER_REGEN_DISABLED")
+frame:RegisterEvent("PLAYER_REGEN_ENABLED")
+frame:RegisterEvent("RAID_ROSTER_UPDATE")
+frame:RegisterEvent("PARTY_MEMBERS_CHANGED")
+
+frame:SetScript("OnEvent", function(self, event)
+    if event == "PLAYER_REGEN_DISABLED" then
+        addon.groupCheck()
+        self:SetScript("OnUpdate", onUpdate)
+    elseif event == "PLAYER_REGEN_ENABLED" then
+        self:SetScript("OnUpdate", nil)
+    else
+        addon.groupCheck()
+    end
+end)
+
+addon.groupCheck = function()
+    local playersRaid = GetNumRaidMembers()
+    local playersParty = GetNumPartyMembers()
+    local inGroup = false
+
+    if playersRaid > 0 then
+        inGroup = true
+        print("in Raid true")
+    elseif playersParty > 0 then
+        inGroup = true
+        print("in Group true")
+    end
+
+    if not inGroup then
+        frame:SetScript("OnUpdate", nil)
+    else
+        frame:SetScript("OnUpdate", onUpdate)
+    end
+end
