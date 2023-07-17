@@ -250,9 +250,9 @@ frame:SetScript('OnUpdate', function()
 
 end)
 
-SLASH_KTMBLIZZ1 = '/ktmsnap'
-SLASH_KTMBLIZZ2 = '/ts'
-SlashCmdList["KTMBLIZZ"] = function(msg)
+SLASH_BTTBLIZZ1 = '/bttsnap'
+SLASH_BTTBLIZZ2 = '/threatsnap'
+SlashCmdList["BTTBLIZZ"] = function(msg)
 	frame.enableSnapping = not frame.enableSnapping
 
 	if msg == 'reset' then

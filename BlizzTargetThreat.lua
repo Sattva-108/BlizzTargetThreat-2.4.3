@@ -15,7 +15,7 @@ local function onUpdate(self, elapsed)
     timer = timer + elapsed
     if timer >= updateFrequency then
         timer = 0
-print("OnUpdate")
+--print("OnUpdate")
         local player = UnitGUID("player")
         local target = UnitGUID("target")
 
@@ -65,18 +65,26 @@ frame:RegisterEvent("PLAYER_REGEN_DISABLED")
 frame:RegisterEvent("PLAYER_REGEN_ENABLED")
 frame:RegisterEvent("RAID_ROSTER_UPDATE")
 frame:RegisterEvent("PARTY_MEMBERS_CHANGED")
+frame:RegisterEvent("UNIT_PET")
 
 
 frame:SetScript("OnEvent", function(self, event)
     addon.groupCheck()
     local PlayerInCombat = UnitAffectingCombat('player')
-    print(PlayerInCombat)
+    local PetInCombat = UnitExists('pet') and UnitAffectingCombat('pet')
+    --print(PlayerInCombat)
     if event == "PLAYER_REGEN_DISABLED" and addon.inGroup and PlayerInCombat then
         self:SetScript("OnUpdate", onUpdate)
+        --print("1 going")
     elseif event == "RAID_ROSTER_UPDATE" and addon.inGroup and PlayerInCombat then
         self:SetScript("OnUpdate", onUpdate)
+        --print("2 going")
     elseif event == "PARTY_MEMBERS_CHANGED" and addon.inGroup and PlayerInCombat then
         self:SetScript("OnUpdate", onUpdate)
+        --print("3 going")
+    elseif (event == "PLAYER_REGEN_DISABLED" or event == "UNIT_PET") and PetInCombat then
+        self:SetScript("OnUpdate", onUpdate)
+        --print("4 going")
     else
         self:SetScript("OnUpdate", nil)
         addon.gui.Frame:Hide()
