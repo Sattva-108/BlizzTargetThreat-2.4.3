@@ -15,7 +15,7 @@ local function onUpdate(self, elapsed)
     timer = timer + elapsed
     if timer >= updateFrequency then
         timer = 0
---print("OnUpdate")
+        print("OnUpdate")
         local player = UnitGUID("player")
         local target = UnitGUID("target")
 
@@ -23,10 +23,34 @@ local function onUpdate(self, elapsed)
             addon.gui.Frame:Hide()
             return
         end
-        local maxThreat, _ = Threat:GetMaxThreatOnTarget(target)
+
+        --------------------------------------------------------------------------------
+        ---- Old
+        --------------------------------------------------------------------------------
+
+
+        --local maxThreat, _ = Threat:GetMaxThreatOnTarget(target)
+        --local myThreat = Threat:GetThreat(player, target)
+
+        --local threatPercent = math.floor(myThreat / maxThreat * 100 + 0.5)
+
+        --------------------------------------------------------------------------------
+        ---- New
+        --------------------------------------------------------------------------------
+
+
         local myThreat = Threat:GetThreat(player, target)
-        local threatPercent = math.floor(myThreat / maxThreat * 100 + 0.5)
-        --print("updated")
+        local secondThreatGUID, secondThreat = Threat:GetPlayerAtPosition(target, 2)
+
+        -- Use the second highest threat as the base if it exists
+        local baseThreat = secondThreat or Threat:GetMaxThreatOnTarget(target)
+
+        local threatPercent = math.floor(myThreat / baseThreat * 100 + 0.5)
+
+        --------------------------------------------------------------------------------
+        ---- Rest of code
+        --------------------------------------------------------------------------------
+
 
         --if threatPercent > 0 then
             addon.gui.Frame:Show()
