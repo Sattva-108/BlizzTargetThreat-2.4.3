@@ -60,38 +60,36 @@ addon.GetThreatStatusColor = function(percentage)
     end
 end
 
+
 frame:RegisterEvent("PLAYER_REGEN_DISABLED")
 frame:RegisterEvent("PLAYER_REGEN_ENABLED")
 frame:RegisterEvent("RAID_ROSTER_UPDATE")
 frame:RegisterEvent("PARTY_MEMBERS_CHANGED")
 
+
 frame:SetScript("OnEvent", function(self, event)
-    if event == "PLAYER_REGEN_DISABLED" then
-        addon.groupCheck()
+    addon.groupCheck()
+    local PlayerInCombat = UnitAffectingCombat('player')
+    print(PlayerInCombat)
+    if event == "PLAYER_REGEN_DISABLED" and addon.inGroup and PlayerInCombat then
         self:SetScript("OnUpdate", onUpdate)
-    elseif event == "PLAYER_REGEN_ENABLED" then
-        self:SetScript("OnUpdate", nil)
+    elseif event == "RAID_ROSTER_UPDATE" and addon.inGroup and PlayerInCombat then
+        self:SetScript("OnUpdate", onUpdate)
+    elseif event == "PARTY_MEMBERS_CHANGED" and addon.inGroup and PlayerInCombat then
+        self:SetScript("OnUpdate", onUpdate)
     else
-        addon.groupCheck()
+        self:SetScript("OnUpdate", nil)
+        addon.gui.Frame:Hide()
     end
 end)
 
 addon.groupCheck = function()
     local playersRaid = GetNumRaidMembers()
     local playersParty = GetNumPartyMembers()
-    local inGroup = false
 
-    if playersRaid > 0 then
-        inGroup = true
-        print("in Raid true")
-    elseif playersParty > 0 then
-        inGroup = true
-        print("in Group true")
-    end
-
-    if not inGroup then
-        frame:SetScript("OnUpdate", nil)
+    if playersRaid > 0 or playersParty > 0 then
+        addon.inGroup = true
     else
-        frame:SetScript("OnUpdate", onUpdate)
+        addon.inGroup = false
     end
 end
