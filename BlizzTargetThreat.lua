@@ -178,3 +178,10 @@ function SlashCmdList.BTT(msg, editbox)
         -- Add more help commands here...
     end
 end
+
+function addon:OnThreatUpdated(event, unitGUID, targetGUID, threat)
+    -- your code here
+    print("123")
+end
+
+Threat.RegisterCallback(addon, "ThreatUpdated", "OnThreatUpdated")
