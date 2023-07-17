@@ -15,7 +15,7 @@ local function onUpdate(self, elapsed)
     timer = timer + elapsed
     if timer >= updateFrequency then
         timer = 0
-        print("OnUpdate")
+        --print("OnUpdate")
         local player = UnitGUID("player")
         local target = UnitGUID("target")
 
@@ -39,13 +39,23 @@ local function onUpdate(self, elapsed)
         --------------------------------------------------------------------------------
 
 
+        local maxThreat = 0
+        local secondMaxThreat = 0
         local myThreat = Threat:GetThreat(player, target)
-        local secondThreatGUID, secondThreat = Threat:GetPlayerAtPosition(target, 2)
+        for guid, threat in Threat:IterateGroupThreatForTarget(target) do
+            if threat > maxThreat then
+                secondMaxThreat = maxThreat
+                maxThreat = threat
+            elseif threat > secondMaxThreat then
+                secondMaxThreat = threat
+            end
+        end
 
-        -- Use the second highest threat as the base if it exists
-        local baseThreat = secondThreat or Threat:GetMaxThreatOnTarget(target)
+        if myThreat >= maxThreat and secondMaxThreat > 0 then
+            maxThreat = secondMaxThreat
+        end
 
-        local threatPercent = math.floor(myThreat / baseThreat * 100 + 0.5)
+        local threatPercent = math.floor(myThreat / maxThreat * 100 + 0.5)
 
         --------------------------------------------------------------------------------
         ---- Rest of code
