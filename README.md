@@ -5,6 +5,22 @@
 **BlizzTargetThreat** adds a small threat indicator to your **target frame**.<br>
 **That will** also change **color** depending on your **current threat.**
 
-Visual textures and readme picture from:
+If you want to use this addon with custom target frames
+-----------------------
+
+1) Use the **following command**
+```lua
+/bttsnap
+```
+3) **Move cursor to desired frame** (dark overlay will indicate active frame)
+4) **Left click**
+5) **Done!**
+
+To **reset** to default state use this **command**
+```lua
+/bttsnap reset
+```
+
+Visual textures, source code and readme picture from:
   **[KLHThreatMeterBlizz](https://github.com/yutsuku/KLHThreatMeterBlizz)**
 
