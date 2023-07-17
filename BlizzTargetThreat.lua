@@ -1,9 +1,11 @@
 BlizzlikeTT_defaults = {
-    -- ... your other config options ...
     EnableGlow = false, -- disable glow by default
 }
 
 local addon = {}
+
+local hadAggro = false
+
 
 addon.gui = {
     ["Frame"] = TargetFrameNumericalThreat,
@@ -27,31 +29,23 @@ local function onUpdate(self, elapsed)
         if not target or UnitIsDeadOrGhost("target") or not UnitAffectingCombat("target") or not UnitCanAttack("player", "target") then
             addon.gui.Frame:Hide()
             TargetFrameFlash:Hide()
+            hadAggro = false
             return
         end
-
         --------------------------------------------------------------------------------
-        ---- Old
-        --------------------------------------------------------------------------------
-
-
-        --local maxThreat, _ = Threat:GetMaxThreatOnTarget(target)
-        --local myThreat = Threat:GetThreat(player, target)
-
-        --local threatPercent = math.floor(myThreat / maxThreat * 100 + 0.5)
-
-        --------------------------------------------------------------------------------
-        ---- New
+        ---- Threat Calculaction Logic
         --------------------------------------------------------------------------------
 
 
         local maxThreat = 0
         local secondMaxThreat = 0
+        local maxThreatGUID = nil
         local myThreat = Threat:GetThreat(player, target)
         for guid, threat in Threat:IterateGroupThreatForTarget(target) do
             if threat > maxThreat then
                 secondMaxThreat = maxThreat
                 maxThreat = threat
+                maxThreatGUID = guid
             elseif threat > secondMaxThreat then
                 secondMaxThreat = threat
             end
@@ -63,25 +57,28 @@ local function onUpdate(self, elapsed)
 
         local threatPercent = math.floor(myThreat / maxThreat * 100 + 0.5)
 
+        -- Check if you have aggro
+        local hasAggro = player == maxThreatGUID
+        if hasAggro and not hadAggro then
+            print("You have aggro!")
+        end
+        hadAggro = hasAggro
+
         --------------------------------------------------------------------------------
         ---- Rest of code
         --------------------------------------------------------------------------------
 
 
-        --if threatPercent > 0 then
-            addon.gui.Frame:Show()
+        addon.gui.Frame:Show()
 
-            local threatStr = string.format("%d%%", threatPercent)
+        local threatStr = string.format("%d%%", threatPercent)
         if threatPercent > 0 then
             addon.gui.text:SetText(threatStr)
         else
             addon.gui.text:SetText("0 %")
         end
 
-            addon.gui.bg:SetVertexColor(addon.GetThreatStatusColor(threatPercent))
-        --else
-        --    addon.gui.Frame:Hide()
-        --end
+        addon.gui.bg:SetVertexColor(addon.GetThreatStatusColor(threatPercent))
 
         -- Set TargetFrameFlash color based on threatPercent
         if BlizzlikeTT_defaults.EnableGlow then
