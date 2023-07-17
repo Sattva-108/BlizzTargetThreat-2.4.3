@@ -1,6 +1,7 @@
 # BlizzTargetThreat-2.4.3
 
-![BlizzTargetThreat](https://github.com/Sattva-108/BlizzTargetThreat-2.4.3/assets/74269253/ec68ab9f-7472-4c38-9de1-7d64d8f7f192)
+![BlizzTargetThreat1](https://github.com/Sattva-108/BlizzTargetThreat-2.4.3/assets/74269253/2536fea5-786c-47ac-88d6-f073e83966c2)
+
 
 **BlizzTargetThreat** adds a small threat indicator to your **target frame**.<br>
 **That will** also change **color** depending on your **current threat.**
