@@ -199,6 +199,8 @@
             -- Print help commands
             print("BlizzlikeTT commands:")
             print("/btt glow - Toggle the target glow.")
+            print("/bttsnap - Attach to another frame.")
+            print("/bttsnap reset - Reset snap to default.")
         end
     end
 
