@@ -1,4 +1,5 @@
 # BlizzTargetThreat-2.4.3
+#### Shows threat percentage for current target.
 
 
 ![BlizzTargetThreat-main](https://github.com/Sattva-108/BlizzTargetThreat-2.4.3/assets/74269253/0d7b5fbd-2890-4177-9ebf-e8ba554f26b2)
@@ -18,11 +19,18 @@ If you want to use this addon with custom target frames
 4) **Left click**
 5) **Done!**
 
-To **reset** to default state use this **command**
+To **reset** **position** to default state use this **command**
 ```lua
 /bttsnap reset
 ```
 
 Visual textures, source code and readme picture from:
   **[KLHThreatMeterBlizz](https://github.com/yutsuku/KLHThreatMeterBlizz)**
+<br>
+
+Credit to: <br>
+
+[**yutsuku**](https://github.com/yutsuku) - for providing **good source code** and **preview image!**
+<br>
+**Finrodi** - for his **experience** and **nice vision** of **how it should work.**
 
