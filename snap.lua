@@ -1,5 +1,14 @@
 local _G = getfenv()
 
+local frame = CreateFrame('Frame')
+frame:Hide()
+frame.enableSnapping = false
+frame.lastFrameID = 0
+
+frame.lazyload = CreateFrame('Frame')
+frame.lazyload.elapsed = 0
+frame.lazyload.attempts = 0
+
 --------------------------------------------------------------------------------
 ---- Define threatFrame aka our main target threat bar.
 --------------------------------------------------------------------------------
@@ -35,16 +44,6 @@ end)
 --------------------------------------------------------------------------------
 ---- Rest of code
 --------------------------------------------------------------------------------
-
-
-local frame = CreateFrame('Frame')
-frame:Hide()
-frame.enableSnapping = false
-frame.lastFrameID = 0
-
-frame.lazyload = CreateFrame('Frame')
-frame.lazyload.elapsed = 0
-frame.lazyload.attempts = 0
 
 _DEBUG_BTT = {}
 
