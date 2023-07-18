@@ -73,7 +73,7 @@
             -- Check if you have aggro
             local hasAggro = UnitIsUnit("player", "targettarget")
             local playerAtPosition1 = (Threat:GetPlayerAtPosition(target, 1) == player)
-            if hasAggro or playerAtPosition1 then
+            if hasAggro then
                 -- Set TargetFrameFlash color to red
                 TargetFrameFlash:SetVertexColor(1, 0, 0, 1) -- red color
                 TargetFrameFlash:Show()
