@@ -8,6 +8,20 @@
 **BlizzTargetThreat** adds a small threat indicator to your **target frame**.<br>
 **That will** also change **color** depending on your **current threat.**
 
+**List available slash commands:**
+
+```lua
+/btt
+```
+
+
+**Toggle glow around target for current threat situation:**<br>
+**Disabled by default.**
+
+```lua
+/btt glow
+```
+
 If you want to use this addon with custom target frames
 -----------------------
 
