@@ -59,17 +59,16 @@ local function onUpdate(self, elapsed)
         local threatPercent = math.floor(myThreat / maxThreat * 100 + 0.5)
 
         -- Check if you have aggro
-        local hasAggro = player == maxThreatGUID
-        if hasAggro and not hadAggro then
-            print("You have aggro!")
+        local hasAggro = UnitIsUnit("player", "targettarget")
+        local playerAtPosition1 = (Threat:GetPlayerAtPosition(target, 1) == player)
+        if hasAggro then
             -- Set TargetFrameFlash color to red
             TargetFrameFlash:SetVertexColor(1, 0, 0, 1) -- red color
             TargetFrameFlash:Show()
-        elseif not hasAggro and hadAggro then
+        else
             -- Remove the red glow when you lose aggro
             TargetFrameFlash:Hide()
         end
-        hadAggro = hasAggro
 
         --------------------------------------------------------------------------------
         ---- Rest of code
@@ -89,17 +88,16 @@ local function onUpdate(self, elapsed)
 
         -- Set TargetFrameFlash color based on threatPercent
         if BlizzlikeTT_defaults.EnableGlow then
-            if hadAggro then
+            if hasAggro then
                 TargetFrameFlash:SetVertexColor(1, 0, 0, 1) -- red color
-                print(hadAggro)
                 return
-            elseif threatPercent >= 90 then
-                print("90")
+            elseif threatPercent >= 80 or playerAtPosition1 then
+                --print("80")
                 TargetFrameFlash:SetVertexColor(1, 1, 0, 1) -- yellow color
                 TargetFrameFlash:Show()
-            elseif threatPercent >= 70 then
-                TargetFrameFlash:SetVertexColor(0, 1, 0, 1) -- yellow color
-                TargetFrameFlash:Show()
+            --elseif threatPercent >= 50 then
+            --    TargetFrameFlash:SetVertexColor(0, 1, 0, 1) -- green color
+            --    TargetFrameFlash:Show()
             else
                 TargetFrameFlash:Hide()
             end
@@ -203,16 +201,6 @@ local function threatUpdatedCallback()
     if numThreatGuys > 1 then
         frame:SetScript("OnUpdate", onUpdate)
         addon.gui.Frame:Show()
-        -- Check if the player still has aggro on the new target
-        local player = UnitGUID("player")
-        local maxThreatGUID, maxThreatValue = Threat:GetPlayerAtPosition(currentTarget, 1)
-        local myThreat = Threat:GetThreat(player, currentTarget)
-        local aggroThreshold = Threat:UnitInMeleeRange("target") and 1.1 or 1.3
-        if player == maxThreatGUID or (myThreat / maxThreatValue) >= aggroThreshold then
-            -- Show the red target frame flash
-            TargetFrameFlash:SetVertexColor(1, 0, 0, 1) -- red color
-            TargetFrameFlash:Show()
-        end
     else
         frame:SetScript("OnUpdate", nil)
         addon.gui.Frame:Hide()
