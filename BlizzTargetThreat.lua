@@ -103,13 +103,12 @@
                 if hasAggro then
                     TargetFrameFlash:SetVertexColor(1, 0, 0, 1) -- red color
                     return
-                elseif threatPercent >= 80 or playerAtPosition1 then
-                    --print("80")
+                elseif playerAtPosition1 and not hasAggro then
+                    TargetFrameFlash:SetVertexColor(1, 0.5, 0, 1) -- orange color
+                    TargetFrameFlash:Show()
+                elseif threatPercent >= 80 then
                     TargetFrameFlash:SetVertexColor(1, 1, 0, 1) -- yellow color
                     TargetFrameFlash:Show()
-                --elseif threatPercent >= 50 then
-                --    TargetFrameFlash:SetVertexColor(0, 1, 0, 1) -- green color
-                --    TargetFrameFlash:Show()
                 else
                     TargetFrameFlash:Hide()
                 end
