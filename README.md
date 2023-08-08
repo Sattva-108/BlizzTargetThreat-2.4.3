@@ -46,5 +46,5 @@ Credit to: <br>
 
 [**yutsuku**](https://github.com/yutsuku) - for providing **good source code** and **preview image!**
 <br>
-**Finrodi** - for his **experience** and **nice vision** of **how it should work.**
+**[Finrodi](https://www.twitch.tv/finrodi/about)** - for his **experience** and **nice vision** of **how it should work.**
 
