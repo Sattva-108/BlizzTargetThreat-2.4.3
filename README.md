@@ -7,6 +7,7 @@
 ## Support
 - Support my development on **[Boosty](https://boosty.to/sattva108)**
 
+
 **BlizzTargetThreat** adds a small threat indicator to your **target frame**.<br>
 **That will** also change **color** depending on your **current threat.**
 
