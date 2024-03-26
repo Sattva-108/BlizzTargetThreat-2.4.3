@@ -5,7 +5,7 @@
 ![BlizzTargetThreat-main](https://github.com/Sattva-108/BlizzTargetThreat-2.4.3/assets/74269253/0d7b5fbd-2890-4177-9ebf-e8ba554f26b2)
 
 ## Support
-- Support my development on **[Boosty](https://boosty.to/sattva108)**
+- Show **Love and Support** my goals **[Boosty](https://boosty.to/sattva108)**
 
 
 **BlizzTargetThreat** adds a small threat indicator to your **target frame**.<br>
