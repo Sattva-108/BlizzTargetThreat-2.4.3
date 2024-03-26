@@ -11,7 +11,7 @@
 ## Support
 - Show **Love and Support** my goals **[Boosty](https://boosty.to/sattva108)**
 
-**List available slash commands:**
+## List available slash commands:
 
 ```lua
 /btt
